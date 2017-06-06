@@ -26,8 +26,7 @@
         //offline baselayer, will use offline source if available
         var baseLayer = L.tileLayer.offline('//{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '&copy; Esri',
-            subdomains: ['server', 'services'],
-            minZoom: 17,
+            subdomains: ['server', 'services']
         }).addTo(map);
 
         //add buttons to save tiles in area viewed
