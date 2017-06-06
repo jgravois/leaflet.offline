@@ -9,6 +9,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.4.3/localforage.min.js" type="text/javascript"></script>
     <script src="dist/leaflet.offline.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" integrity="sha384-dNpIIXE8U05kAbPhy3G1cz+yZmTzA6CY8Vg/u2L9xRnHjJiAK76m2BIEaSEV+/aU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <script src="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
 </head>
 
 <body>
@@ -17,15 +23,18 @@
     <p>Current storage: <span id="storage"></storage> files </p>
     <script type="text/javascript">
         var map = L.map('map');
+
+        L.control.locate().addTo(map);
         //offline baselayer, will use offline source if available
-        var baseLayer = L.tileLayer.offline('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data {attribution.OpenStreetMap}',
-            subdomains: 'abc', //ignored
-            minZoom: 13,
+        var baseLayer = L.tileLayer.offline('//{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri',
+            subdomains: ['server', 'services'],
+            minZoom: 17,
         }).addTo(map);
+
         //add buttons to save tiles in area viewed
         var control = L.control.savetiles(baseLayer, {
-            'zoomlevels': [13, 16], //optional zoomlevels to save, default current zoomlevel
+            'zoomlevels': [13, 17], //optional zoomlevels to save, default current zoomlevel
             'confirm': function(layer, succescallback) {
                 if (window.confirm("Save " + layer._tilesforSave.length)) {
                     succescallback();
@@ -59,10 +68,7 @@
         });
 
 
-        map.setView({
-            lat: 51.985,
-            lng: 5
-        }, 16);
+        map.setView([37.333333, -118.625], 15);
         //layer switcher control
         L.control.layers({
             "osm (offline)": baseLayer
